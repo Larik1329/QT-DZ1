@@ -4,6 +4,7 @@
 #include "workwithtable.h"
 
 #include <QMainWindow>
+#include <QSignalMapper>
 #include <tableviewmodel.h>
 
 QT_BEGIN_NAMESPACE
@@ -25,6 +26,9 @@ public:
 
 
     void CreateRowBut();
+signals:
+    //void mapped(int i);
+
 private slots:
     void on_OpenFileButton_clicked();
 
@@ -34,6 +38,9 @@ private slots:
 
     void on_SaveButton_clicked();
 
+    //void map();
+
+    void mySlot_Test(int i);
 protected:
     void closeEvent(QCloseEvent *event) override;
 
@@ -41,6 +48,8 @@ private:
     void initModel();
 
 private:
+    QSignalMapper *signalMapper;
+
     Ui::MainWindow *ui;
 
     TableViewModel* _tModel;
