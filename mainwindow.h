@@ -26,7 +26,7 @@ public:
 
 
     void CreateRowBut();
-    void ButtonsAdd(int rowLenght);
+    void ButtonsInTableAdd(int rowLenght);
 signals:
     //void mapped(int i);
 
@@ -42,6 +42,7 @@ private slots:
     //void map();
 
     void mySlot_Test(int i);
+    void mySlot_Test2(int i);
 protected:
     void closeEvent(QCloseEvent *event) override;
 
@@ -50,6 +51,8 @@ private:
 
 private:
     QSignalMapper *signalMapper;
+
+    QSignalMapper *signalMapper2;
 
     Ui::MainWindow *ui;
 

@@ -16,7 +16,6 @@
 MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWindow)
 {    
     ui->setupUi(this);
-    signalMapper = new QSignalMapper(this);
     workwithtable = new WorkWithTable();
     initModel();
 }
@@ -32,43 +31,35 @@ void  MainWindow::initModel(){
     ui->tableView->setModel(_tModel);//NNAADDAA
     workwithtable->DefaultVeiw(ui,_tModel);
     workwithtable->TableRefresh(ui,_tModel);
-    ButtonsAdd(GlobalParam::TableData.count());
+    ButtonsInTableAdd(GlobalParam::TableData.count());
 
 }
-void MainWindow::ButtonsAdd(int rowLenght){
+void MainWindow::ButtonsInTableAdd(int rowLenght){
     signalMapper=new QSignalMapper(this);
+    signalMapper2=new QSignalMapper(this);
     for( int i=0; i<rowLenght; i++ ) {
 
         QModelIndex item = _tModel->index(i, 5);
-
-        //make new button for this row
-        //item.sibling(1,1);
         QPushButton *cartButton = new QPushButton("Edit line");
         ui->tableView->setIndexWidget(item, cartButton);
-
-
-        connect(cartButton, SIGNAL(clicked(bool)), signalMapper, SLOT(map()));
+        connect(cartButton, SIGNAL(clicked()), signalMapper, SLOT(map()));
         signalMapper->setMapping(cartButton, i);
-        /*  item = _tModel->index(i, 6);
 
-        //make new button for this row
-        item.sibling(1,1);
+        item = _tModel->index(i, 6);
         cartButton = new QPushButton("Delete line");
         ui->tableView->setIndexWidget(item, cartButton);
-
-        signalMapper->setMapping(cartButton, i);  // Исправить!!! добавляет в тот же Qmap
-
-        connect(cartButton, SIGNAL(clicked()), signalMapper, SLOT(map()));*/
+        connect(cartButton, SIGNAL(clicked()), signalMapper2, SLOT(map()));
+        signalMapper2->setMapping(cartButton, i);
     }
     connect(signalMapper, SIGNAL(mappedInt(int)), this, SLOT(mySlot_Test(int)));
+    connect(signalMapper2, SIGNAL(mappedInt(int)), this, SLOT(mySlot_Test2(int)));
 }
 void MainWindow::mySlot_Test(int i){
 
 }
-/*void MainWindow::map(){
-    emit mapped(1);
-}*/
+void MainWindow::mySlot_Test2(int i){
 
+}
 
 void MainWindow::on_OpenFileButton_clicked() //Открытие файла
 {
@@ -81,7 +72,7 @@ void MainWindow::on_OpenFileButton_clicked() //Открытие файла
             workwithtable->FileOpen(ui);
             workwithtable->FileOriginDataSaver(ui);
             workwithtable->TableRefresh(ui,_tModel);
-    ButtonsAdd(GlobalParam::TableData.count());
+    ButtonsInTableAdd(GlobalParam::TableData.count());
         }
     }
     else
@@ -90,7 +81,7 @@ void MainWindow::on_OpenFileButton_clicked() //Открытие файла
         workwithtable->FileOpen(ui);
         workwithtable->FileOriginDataSaver(ui);
         workwithtable->TableRefresh(ui,_tModel);
-    ButtonsAdd(GlobalParam::TableData.count());
+    ButtonsInTableAdd(GlobalParam::TableData.count());
     }
 }
 
@@ -106,7 +97,7 @@ void MainWindow::on_CreateFileButton_clicked() //Создание нового �
             workwithtable->DefaultVeiw(ui,_tModel);
             workwithtable->FileOriginDataSaver(ui);
             workwithtable->TableRefresh(ui,_tModel);
-    ButtonsAdd(GlobalParam::TableData.count());
+    ButtonsInTableAdd(GlobalParam::TableData.count());
         }
     }
     else{
@@ -118,7 +109,7 @@ void MainWindow::on_CreateFileButton_clicked() //Создание нового �
         workwithtable->DefaultVeiw(ui,_tModel);
         workwithtable->FileOriginDataSaver(ui);
         workwithtable->TableRefresh(ui,_tModel);
-    ButtonsAdd(GlobalParam::TableData.count());
+    ButtonsInTableAdd(GlobalParam::TableData.count());
     }
 }
 
@@ -127,7 +118,7 @@ void MainWindow::on_CancelChangesButton_clicked() //Отмена изменен�
     _tModel = new TableViewModel(7);
     workwithtable->LoadFileOriginData(ui);
     workwithtable->TableRefresh(ui,_tModel);
-    ButtonsAdd(GlobalParam::TableData.count());
+    ButtonsInTableAdd(GlobalParam::TableData.count());
 }
 
 void MainWindow::on_SaveButton_clicked() //Сохранение файла
