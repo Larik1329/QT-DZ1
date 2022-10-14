@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
 {    
     ui->setupUi(this);
     workwithtable = new WorkWithTable();
-    initModel();
+   // initModel();
 }
 
 MainWindow::~MainWindow()
@@ -51,14 +51,17 @@ void MainWindow::ButtonsInTableAdd(int rowLenght){
         connect(cartButton, SIGNAL(clicked()), signalMapper2, SLOT(map()));
         signalMapper2->setMapping(cartButton, i);
     }
-    connect(signalMapper, SIGNAL(mappedInt(int)), this, SLOT(mySlot_Test(int)));
-    connect(signalMapper2, SIGNAL(mappedInt(int)), this, SLOT(mySlot_Test2(int)));
+    connect(signalMapper, SIGNAL(mappedInt(int)), this, SLOT(EditSlot(int)));
+    connect(signalMapper2, SIGNAL(mappedInt(int)), this, SLOT(DeleteSlot(int)));
 }
-void MainWindow::mySlot_Test(int i){
-
+void MainWindow::EditSlot(int i){
+    workwithtable->EditRow(ui,i);
 }
-void MainWindow::mySlot_Test2(int i){
-
+void MainWindow::DeleteSlot(int i){
+    workwithtable->DeleteRow(ui,i);
+    _tModel = new TableViewModel(7);
+    workwithtable->TableRefresh(ui,_tModel);
+    ButtonsInTableAdd(GlobalParam::TableData.count());
 }
 
 void MainWindow::on_OpenFileButton_clicked() //Открытие файла
@@ -72,17 +75,18 @@ void MainWindow::on_OpenFileButton_clicked() //Открытие файла
             workwithtable->FileOpen(ui);
             workwithtable->FileOriginDataSaver(ui);
             workwithtable->TableRefresh(ui,_tModel);
-    ButtonsInTableAdd(GlobalParam::TableData.count());
+            ButtonsInTableAdd(GlobalParam::TableData.count());
         }
     }
     else
     {
-        _tModel = new TableViewModel(7);
         workwithtable->FileOpen(ui);
+        if(GlobalParam::FileInRam){
+        _tModel = new TableViewModel(7);
         workwithtable->FileOriginDataSaver(ui);
         workwithtable->TableRefresh(ui,_tModel);
-    ButtonsInTableAdd(GlobalParam::TableData.count());
-    }
+        ButtonsInTableAdd(GlobalParam::TableData.count());
+        }}
 }
 
 void MainWindow::on_CreateFileButton_clicked() //Создание нового файла, только в оперативке

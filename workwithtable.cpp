@@ -25,9 +25,21 @@ void WorkWithTable::LoadFileOriginData(Ui::MainWindow * ui)
     GlobalParam::TableData=GlobalParam::FileOriginData;
 }
 
+void WorkWithTable::EditRow(Ui::MainWindow * ui, int row){
+
+}
+
+void WorkWithTable::AddRow(Ui::MainWindow * ui){
+
+}
+
+void WorkWithTable::DeleteRow(Ui::MainWindow * ui, int row){
+    GlobalParam::TableData.remove(row);
+}
 
 void WorkWithTable::FileOpen(Ui::MainWindow * ui) //Функция для открытия файла и вывода в таблицу + активация кнопок
 {
+    //GlobalParam::FileInRam=false;
      QString str = QFileDialog::getOpenFileName(0, "Выбор файла с БД", "","*.json");
     if (str.isEmpty())
         return;

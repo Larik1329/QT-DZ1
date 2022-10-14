@@ -29,6 +29,9 @@ public:
     bool FileSave(Ui::MainWindow * ui);
 
     void TableRefresh(Ui::MainWindow *ui, TableViewModel *_tModel);
+    void EditRow(Ui::MainWindow *ui, int row);
+    void DeleteRow(Ui::MainWindow *ui, int row);
+    void AddRow(Ui::MainWindow *ui);
 };
 
 #endif // WORKWITHTABLE_H

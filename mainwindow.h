@@ -41,8 +41,8 @@ private slots:
 
     //void map();
 
-    void mySlot_Test(int i);
-    void mySlot_Test2(int i);
+    void EditSlot(int i);
+    void DeleteSlot(int i);
 protected:
     void closeEvent(QCloseEvent *event) override;
 
