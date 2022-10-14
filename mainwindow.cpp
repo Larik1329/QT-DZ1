@@ -28,17 +28,17 @@ MainWindow::~MainWindow()
 
 
 void  MainWindow::initModel(){
-   _tModel = new TableViewModel(7);//NNAADDAA
+    _tModel = new TableViewModel(7);//NNAADDAA
     ui->tableView->setModel(_tModel);//NNAADDAA
-   workwithtable->DefaultVeiw(ui);
+    workwithtable->DefaultVeiw(ui,_tModel);
     workwithtable->TableRefresh(ui,_tModel);
+    ButtonsAdd(GlobalParam::TableData.count());
 
-signalMapper=new QSignalMapper(this);
+}
+void MainWindow::ButtonsAdd(int rowLenght){
+    signalMapper=new QSignalMapper(this);
+    for( int i=0; i<rowLenght; i++ ) {
 
-
-
-    for( int i=0; i<6; i++ ) { //replace rows.length with your list or vector which consists of the data for your rows.
-        //do something with your data for normal cells...
         QModelIndex item = _tModel->index(i, 5);
 
         //make new button for this row
@@ -49,10 +49,10 @@ signalMapper=new QSignalMapper(this);
 
         connect(cartButton, SIGNAL(clicked(bool)), signalMapper, SLOT(map()));
         signalMapper->setMapping(cartButton, i);
-       /*  item = _tModel->index(i, 6);
+        /*  item = _tModel->index(i, 6);
 
         //make new button for this row
-       item.sibling(1,1);
+        item.sibling(1,1);
         cartButton = new QPushButton("Delete line");
         ui->tableView->setIndexWidget(item, cartButton);
 
@@ -61,7 +61,6 @@ signalMapper=new QSignalMapper(this);
         connect(cartButton, SIGNAL(clicked()), signalMapper, SLOT(map()));*/
     }
     connect(signalMapper, SIGNAL(mappedInt(int)), this, SLOT(mySlot_Test(int)));
-    //_tModel->reset();
 }
 void MainWindow::mySlot_Test(int i){
 
@@ -78,16 +77,20 @@ void MainWindow::on_OpenFileButton_clicked() //Открытие файла
         reply = QMessageBox::question(this, "Предупреждение", "Вы действительно хотите открыть новый файл, не сохранив текущий файл?",
                                       QMessageBox::Yes|QMessageBox::No);
         if (reply == QMessageBox::Yes) {
+            _tModel = new TableViewModel(7);
             workwithtable->FileOpen(ui);
             workwithtable->FileOriginDataSaver(ui);
             workwithtable->TableRefresh(ui,_tModel);
+    ButtonsAdd(GlobalParam::TableData.count());
         }
     }
     else
     {
+        _tModel = new TableViewModel(7);
         workwithtable->FileOpen(ui);
         workwithtable->FileOriginDataSaver(ui);
         workwithtable->TableRefresh(ui,_tModel);
+    ButtonsAdd(GlobalParam::TableData.count());
     }
 }
 
@@ -99,26 +102,32 @@ void MainWindow::on_CreateFileButton_clicked() //Создание нового �
                                       QMessageBox::Yes|QMessageBox::No);
         if (reply == QMessageBox::Yes) {
             ui->label_2->setText("");
-            workwithtable->DefaultVeiw(ui);
+            _tModel = new TableViewModel(7);
+            workwithtable->DefaultVeiw(ui,_tModel);
             workwithtable->FileOriginDataSaver(ui);
             workwithtable->TableRefresh(ui,_tModel);
+    ButtonsAdd(GlobalParam::TableData.count());
         }
     }
     else{
         GlobalParam::FileInRam=true;
+        _tModel = new TableViewModel(7);
         ui->label_2->setText("");
         ui->CancelChangesButton->setEnabled(true);
         ui->SaveButton->setEnabled(true);
-        workwithtable->DefaultVeiw(ui);
+        workwithtable->DefaultVeiw(ui,_tModel);
         workwithtable->FileOriginDataSaver(ui);
         workwithtable->TableRefresh(ui,_tModel);
+    ButtonsAdd(GlobalParam::TableData.count());
     }
 }
 
 void MainWindow::on_CancelChangesButton_clicked() //Отмена изменений
 {
+    _tModel = new TableViewModel(7);
     workwithtable->LoadFileOriginData(ui);
     workwithtable->TableRefresh(ui,_tModel);
+    ButtonsAdd(GlobalParam::TableData.count());
 }
 
 void MainWindow::on_SaveButton_clicked() //Сохранение файла

@@ -1,4 +1,5 @@
 #include "workwithtable.h"
+#include "mainwindow.h"
 #include "qjsondocument.h"
 #include "ui_mainwindow.h"
 #include "workwithjson.h"
@@ -47,8 +48,8 @@ void WorkWithTable::FileOpen(Ui::MainWindow * ui) //Функция для отк
 
 }
 
-void WorkWithTable::DefaultVeiw(Ui::MainWindow * ui) //Добавление двух объектов в таблицу (для примера)
-{
+void WorkWithTable::DefaultVeiw(Ui::MainWindow * ui,TableViewModel* _tModel) //Добавление двух объектов в таблицу (для примера)
+{    
     WorkWithJson *workwithjson = new WorkWithJson();
     GlobalParam::TableData = workwithjson->JsonDeserialise(workwithjson->JsonDefaultSerialise());
     FileOriginDataSaver(ui);
@@ -70,8 +71,10 @@ void WorkWithTable::TableRefresh(Ui::MainWindow * ui,TableViewModel* _tModel) //
         tTest.append("");
         _tModel->append(tTest);
         tTest.clear();
+
     }
     _tModel->reset();
+
 }
 
 void WorkWithTable::FileOriginDataSaver(Ui::MainWindow * ui) //Сохранение начального состояния таблицы (используется Vector)

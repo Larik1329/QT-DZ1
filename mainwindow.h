@@ -26,6 +26,7 @@ public:
 
 
     void CreateRowBut();
+    void ButtonsAdd(int rowLenght);
 signals:
     //void mapped(int i);
 

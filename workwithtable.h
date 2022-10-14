@@ -22,7 +22,7 @@ public:
 
     void FileOpen(Ui::MainWindow * ui);
 
-    void DefaultVeiw(Ui::MainWindow * ui);
+    void DefaultVeiw(Ui::MainWindow * ui,TableViewModel* _tModel);
 
     void FileOriginDataSaver(Ui::MainWindow * ui);
 
