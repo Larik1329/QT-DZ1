@@ -34,7 +34,8 @@ void  MainWindow::initModel(){
     ButtonsInTableAdd(GlobalParam::TableData.count());
 
 }
-void MainWindow::ButtonsInTableAdd(int rowLenght){
+void MainWindow::ButtonsInTableAdd(int rowLenght) //Добавление кнопок: Добавить и Удалить
+{
     signalMapper=new QSignalMapper(this);
     signalMapper2=new QSignalMapper(this);
     for( int i=0; i<rowLenght; i++ ) {
@@ -54,10 +55,29 @@ void MainWindow::ButtonsInTableAdd(int rowLenght){
     connect(signalMapper, SIGNAL(mappedInt(int)), this, SLOT(EditSlot(int)));
     connect(signalMapper2, SIGNAL(mappedInt(int)), this, SLOT(DeleteSlot(int)));
 }
-void MainWindow::EditSlot(int i){
+
+void MainWindow::EditSlot(int i) //Редактирование строки
+{
     workwithtable->EditRow(ui,i);
 }
-void MainWindow::DeleteSlot(int i){
+void MainWindow::on_AddButton_clicked()// Добавление новой строки в таблицу
+{
+    if(ui->AddButton->text()=="Добавить"){
+    workwithtable->AddRow(ui);
+    _tModel = new TableViewModel(7);
+    workwithtable->TableRefresh(ui,_tModel);
+    ButtonsInTableAdd(GlobalParam::TableData.count());
+    }
+    else{
+        workwithtable->ConfirmEditRow(ui,ui->AddButton->text().remove("Изменить строку ").toInt()-1);
+        _tModel = new TableViewModel(7);
+        workwithtable->TableRefresh(ui,_tModel);
+        ButtonsInTableAdd(GlobalParam::TableData.count());
+    }
+}
+
+void MainWindow::DeleteSlot(int i) //Удаление выбранной строки
+{
     workwithtable->DeleteRow(ui,i);
     _tModel = new TableViewModel(7);
     workwithtable->TableRefresh(ui,_tModel);
@@ -110,6 +130,7 @@ void MainWindow::on_CreateFileButton_clicked() //Создание нового �
         ui->label_2->setText("");
         ui->CancelChangesButton->setEnabled(true);
         ui->SaveButton->setEnabled(true);
+        ui->AddButton->setEnabled(true);
         workwithtable->DefaultVeiw(ui,_tModel);
         workwithtable->FileOriginDataSaver(ui);
         workwithtable->TableRefresh(ui,_tModel);

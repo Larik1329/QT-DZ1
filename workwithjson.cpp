@@ -69,19 +69,24 @@ QJsonDocument  WorkWithJson::JsonSerialise(QVector <Workers> FileOriginData)
     QJsonDocument document;
     int c=0;
     QJsonObject workers;
+    //workers.constEnd();
     foreach (const auto& tempFOD, FileOriginData){
         QJsonObject worker;
+        workers.end();
             worker.insert("1id",tempFOD.id);
             worker.insert("2worker",tempFOD.worker);
             worker.insert("3specialnost",tempFOD.specialnost);
             worker.insert("4zp",tempFOD.zp);
             worker.insert("5pol",tempFOD.pol);
-        workers.insert("worker"+QString::number(c),worker);
+            workers.insert("Worker"+QString::number(c),worker);///!!!!!!!!!!!!!!!
+
         c++;
     }
     document.setObject(workers);
     return document;
 }
+
+
 
 QVector <WorkWithJson::Workers> WorkWithJson::JsonDeserialise(QString FileOriginData)
 {
@@ -92,8 +97,15 @@ Workers:Workers tempWorkers("","","","","");
     QJsonDocument d = QJsonDocument::fromJson(FileOriginData.toUtf8(),&jerror);
     ////====================Добавить обработку ошибок!!!
     QJsonObject temp1Object = d.object();
-    foreach (const auto& temp1, temp1Object.keys()) {
-        QJsonObject temp2Object = temp1Object.value(temp1).toObject();
+    QList<QString> Title =temp1Object.keys();
+    int count=Title.count();
+    QList<int> structId;
+    for (int i = 0; i < count; ++i) {
+        structId.append(Title[i].remove("Worker").toInt());
+    }
+    std::sort(std::begin(structId), std::end(structId)); ///!!!!!!!!!!!!!!!!!!!!!!!
+    for (int i = 0; i < count; ++i) {
+        QJsonObject temp2Object = temp1Object.value("Worker"+QString::number(structId[i])).toObject();
         tempWorkers.id=temp2Object.value("1id").toString();
         tempWorkers.worker=temp2Object.value("2worker").toString();
         tempWorkers.specialnost=temp2Object.value("3specialnost").toString();

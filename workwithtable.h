@@ -32,6 +32,7 @@ public:
     void EditRow(Ui::MainWindow *ui, int row);
     void DeleteRow(Ui::MainWindow *ui, int row);
     void AddRow(Ui::MainWindow *ui);
+    void ConfirmEditRow(Ui::MainWindow *ui, int row);
 };
 
 #endif // WORKWITHTABLE_H

@@ -5,6 +5,7 @@
 class WorkWithJson
 {
 public:
+
     struct Workers
     {
         QString id;
@@ -20,6 +21,13 @@ public:
             zp=_zp;
             pol=_pol;
         }
+        Workers(){
+            this->id="";
+            this->pol="";
+            this->specialnost="";
+            this->worker="";
+            this->zp="";
+        };
     };
     WorkWithJson();
     QJsonDocument  JsonSerialise(QVector <Workers> FileOriginData);

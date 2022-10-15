@@ -22,8 +22,6 @@ set(PROJECT_SOURCES
         workwithjson.cpp
         tableviewmodel.cpp
         workwithtable.cpp
-        delegatebutton.cpp
-        delegatebutton.h
         workwithtable.h
         workwithjson.h
         tableviewmodel.h

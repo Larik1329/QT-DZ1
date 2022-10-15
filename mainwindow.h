@@ -39,6 +39,7 @@ private slots:
 
     void on_SaveButton_clicked();
 
+    void on_AddButton_clicked();
     //void map();
 
     void EditSlot(int i);

@@ -6,6 +6,7 @@
 #include <QFileDialog>
 #include <QFile>
 #include <tableviewmodel.h>
+#include <QString>
 
 QT_BEGIN_NAMESPACE
 namespace GlobalParam {
@@ -26,10 +27,43 @@ void WorkWithTable::LoadFileOriginData(Ui::MainWindow * ui)
 }
 
 void WorkWithTable::EditRow(Ui::MainWindow * ui, int row){
-
+    ui->lineEdit_Name->setText(GlobalParam::TableData[row].worker);
+    ui->lineEdit_Id->setText(GlobalParam::TableData[row].id);
+    ui->lineEdit_Pol->setText(GlobalParam::TableData[row].pol);
+    ui->lineEdit_Specialnost->setText(GlobalParam::TableData[row].specialnost);
+    ui->lineEdit_ZP->setText(GlobalParam::TableData[row].zp);
+    ui->AddButton->setText("Изменить строку " + QString::number(row+1));
 }
 
-void WorkWithTable::AddRow(Ui::MainWindow * ui){
+void WorkWithTable::ConfirmEditRow(Ui::MainWindow * ui, int row){
+    GlobalParam::TableData[row].worker=ui->lineEdit_Name->text();
+    GlobalParam::TableData[row].id=ui->lineEdit_Id->text();
+    GlobalParam::TableData[row].pol=ui->lineEdit_Pol->text();
+    GlobalParam::TableData[row].specialnost=ui->lineEdit_Specialnost->text();
+    GlobalParam::TableData[row].zp=ui->lineEdit_ZP->text();
+    ui->lineEdit_Name->setText("");
+    ui->lineEdit_Id->setText("");
+    ui->lineEdit_Pol->setText("");
+    ui->lineEdit_Specialnost->setText("");
+    ui->lineEdit_ZP->setText("");
+    ui->AddButton->setText("Добавить");
+}
+
+
+void WorkWithTable::AddRow(Ui::MainWindow * ui)
+{
+    WorkWithJson::Workers newWorker;
+    newWorker.worker=ui->lineEdit_Name->text();
+    newWorker.id=ui->lineEdit_Id->text();
+    newWorker.pol=ui->lineEdit_Pol->text();
+    newWorker.specialnost=ui->lineEdit_Specialnost->text();
+    newWorker.zp=ui->lineEdit_ZP->text();
+    GlobalParam::TableData.append(newWorker);
+    ui->lineEdit_Name->setText("");
+    ui->lineEdit_Id->setText("");
+    ui->lineEdit_Pol->setText("");
+    ui->lineEdit_Specialnost->setText("");
+    ui->lineEdit_ZP->setText("");
 
 }
 
@@ -51,7 +85,7 @@ void WorkWithTable::FileOpen(Ui::MainWindow * ui) //Функция для отк
     GlobalParam::TableData=workwithjson->readJsonFile(FilePath);
     ui->CancelChangesButton->setEnabled(true);
     ui->SaveButton->setEnabled(true);
-
+    ui->AddButton->setEnabled(true);
     //if (!(str=="")){
     //QMessageBox *msgBox = new QMessageBox(0);
     //QMessageBox::about(msgBox, "Предупреждение","Файл не того формата!!!");
